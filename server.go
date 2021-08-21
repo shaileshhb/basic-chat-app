@@ -4,6 +4,7 @@ import (
 	"log"
 	"net"
 
+	"github.com/shaileshhb/basic-chat-app/chat"
 	"google.golang.org/grpc"
 )
 
@@ -13,7 +14,12 @@ func main() {
 		log.Fatalf("Failed to listen on port 9000: %v \n", err)
 	}
 
+	log.Println("Server started at port :9000")
+
+	chatServer := chat.Server{}
 	grpcServer := grpc.NewServer()
+
+	chat.RegisterBasicChatServiceServer(grpcServer, &chatServer)
 
 	err = grpcServer.Serve(listen)
 	if err != nil {
